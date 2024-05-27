@@ -1,0 +1,48 @@
+{
+  "type": "excalidraw",
+  "version": 2,
+  "source": "https://marketplace.visualstudio.com/items?itemName=pomdtr.excalidraw-editor",
+  "elements": [
+    {
+      "type": "text",
+      "version": 129,
+      "versionNonce": 931342916,
+      "isDeleted": false,
+      "id": "6Y8Qp7OiKMH3sLSd1WJyx",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "angle": 0,
+      "x": 447.7139587402344,
+      "y": 201.74549865722656,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "width": 352.6595458984375,
+      "height": 100,
+      "seed": 1052713825,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "boundElements": [],
+      "updated": 1716712645599,
+      "link": null,
+      "locked": false,
+      "fontSize": 20,
+      "fontFamily": 1,
+      "text": "0 ou 1 voisin : mort\n2 ou 3 voisin : en vie\nvoisin > 3 : mort \nvoisin = 3 : en vie plus reproduction",
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "containerId": null,
+      "originalText": "0 ou 1 voisin : mort\n2 ou 3 voisin : en vie\nvoisin > 3 : mort \nvoisin = 3 : en vie plus reproduction",
+      "lineHeight": 1.25,
+      "baseline": 92
+    }
+  ],
+  "appState": {
+    "gridSize": null,
+    "viewBackgroundColor": "#ffffff"
+  },
+  "files": {}
+}
