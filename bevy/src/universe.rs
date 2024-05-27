@@ -2,8 +2,8 @@ use std::time::Duration;
 
 use bevy::{
     app::{Plugin, Startup, Update},
-    ecs::system::{Commands, Res, ResMut, Resource},
-    reflect::List,
+    ecs::{reflect::{self, ReflectResource}, system::{Commands, Res, ResMut, Resource}},
+    reflect::{List, Reflect},
     time::{Time, Timer, TimerMode},
 };
 use rand::Rng;
@@ -17,13 +17,16 @@ impl Plugin for UniversePlugin {
         app.insert_resource(Universe::init(100, 100));
         app.add_systems(Startup, setup_timer);
         app.add_systems(Update, tick);
+        app.register_type::<Universe>();
     }
 }
 
-#[derive(Resource)]
+#[derive(Default, Resource, Reflect)]
+#[reflect(Resource)]
 pub struct Universe {
     pub width: u32,
     pub height: u32,
+    #[reflect(ignore)]
     pub cells: Vec<Vec<Cell>>,
     pub generation_time: u64,
 }
@@ -66,7 +69,7 @@ impl Universe {
             width,
             height,
             cells,
-            generation_time: 200
+            generation_time: 50
         }
     }
 

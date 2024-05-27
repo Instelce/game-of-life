@@ -1,4 +1,4 @@
-use bevy::{app::{Plugin, Startup, Update}, core_pipeline::core_2d::Camera2dBundle, ecs::{component::Component, query::With, system::{Commands, Query, Res}}, input::keyboard::KeyCode, transform::components::Transform, input::ButtonInput};
+use bevy::{app::{Plugin, Startup, Update}, core::Name, core_pipeline::core_2d::Camera2dBundle, ecs::{component::Component, query::With, system::{Commands, Query, Res}}, input::{keyboard::KeyCode, ButtonInput}, transform::components::Transform};
 
 const CAMERA_SPEED: f32 = 25.;
 
@@ -20,7 +20,7 @@ fn spawn_camera(
     mut commands: Commands
 ) {
     // spawn camera
-    commands.spawn((Camera2dBundle::default(), Camera));
+    commands.spawn((Camera2dBundle::default(), Camera, Name::new("Camera")));
 }
 
 fn move_camera(
