@@ -1,4 +1,4 @@
-use bevy::{app::{Plugin, Startup, Update}, core::Name, core_pipeline::core_2d::Camera2dBundle, ecs::{component::Component, query::With, system::{Commands, Query, Res}}, input::{keyboard::KeyCode, ButtonInput}, transform::components::Transform};
+use bevy::prelude::*;
 
 const CAMERA_SPEED: f32 = 25.;
 

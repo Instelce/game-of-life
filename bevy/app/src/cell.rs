@@ -1,4 +1,4 @@
-use bevy::{app::{Plugin, Startup}, asset::Handle, core::Name, ecs::{component::Component, reflect::ReflectComponent, system::{Commands, Resource}}, prelude::SpatialBundle, reflect::Reflect, render::color::Color, sprite::ColorMaterial};
+use bevy::prelude::*;
 
 // constants
 pub const COLOR_ALIVE: Color = Color::WHITE;
@@ -13,7 +13,7 @@ impl Plugin for CellPlugin {
         // app.register_type::<Cell>();
         // app.add_systems(Startup, spawn_cell_parent);
     }
-} 
+}
 
 
 // ressources

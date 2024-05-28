@@ -1,0 +1,10 @@
+[package]
+name = "app"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+ui = { path = "../ui" }
+bevy = { workspace = true }
+bevy-inspector-egui = { workspace = true }
+rand = { wrorkspace = true }

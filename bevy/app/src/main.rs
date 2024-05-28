@@ -1,24 +1,13 @@
 mod camera;
 mod cell;
 mod universe;
-mod ui;
 
-use bevy::{
-    app::{App, Startup, Update}, asset::{Assets, Handle}, core::Name, core_pipeline::core_2d::Camera2dBundle, ecs::{
-        entity::Entity, query::With, schedule::IntoSystemConfigs, system::{Commands, Query, Res, ResMut}
-    }, hierarchy::BuildChildren, input::{common_conditions::input_toggle_active, keyboard::KeyCode}, math::primitives::Rectangle, render::{
-        camera::ClearColor,
-        color::{self, Color},
-        mesh::Mesh,
-    }, sprite::{ColorMaterial, Material2d, MaterialMesh2dBundle}, transform::components::Transform, utils::default, DefaultPlugins
-};
+use bevy::{input::common_conditions::input_toggle_active, prelude::*, sprite::MaterialMesh2dBundle};
 use bevy_inspector_egui::quick::WorldInspectorPlugin;
 use camera::CameraPlugin;
-use cell::{
-    spawn_cell_parent, Cell, CellAliveColor, CellDeadColor, CellParent, CellPlugin, CellStatus, COLOR_ALIVE, COLOR_DEAD
-};
+use cell::*;
+use universe::*;
 use ui::UiPlugin;
-use universe::{Universe, UniversePlugin};
 
 // types
 pub type Error = Box<dyn std::error::Error>;
@@ -28,14 +17,14 @@ const CELL_SIZE: f32 = 10.;
 
 fn main() {
     App::new()
-        .add_plugins(DefaultPlugins)
-        .add_plugins(CameraPlugin)
-        .add_plugins(
+        .add_plugins((
+            DefaultPlugins, 
+            CameraPlugin,
             WorldInspectorPlugin::default().run_if(input_toggle_active(true, KeyCode::Escape)),
-        )
-        .add_plugins(UiPlugin)
-        .add_plugins(UniversePlugin)
-        .add_plugins(CellPlugin)
+            UiPlugin,
+            UniversePlugin,
+            CellPlugin
+        ))
         .insert_resource(ClearColor(Color::rgb(0.1, 0.1, 0.1)))
         .add_systems(Startup, (spawn_cell_parent, setup).chain())
         .add_systems(Update, draw_cells)

@@ -1,11 +1,6 @@
-use std::time::Duration;
+use std::{default, time::Duration};
 
-use bevy::{
-    app::{Plugin, Startup, Update},
-    ecs::{reflect::{self, ReflectResource}, system::{Commands, Res, ResMut, Resource}},
-    reflect::{List, Reflect},
-    time::{Time, Timer, TimerMode},
-};
+use bevy::prelude::*;
 use rand::Rng;
 
 use crate::cell::{Cell, CellStatus};
@@ -16,12 +11,19 @@ impl Plugin for UniversePlugin {
     fn build(&self, app: &mut bevy::prelude::App) {
         app.insert_resource(Universe::init(100, 100));
         app.add_systems(Startup, setup_timer);
-        app.add_systems(Update, tick);
+        app.add_systems(Update, (tick, change_status));
         app.register_type::<Universe>();
     }
 }
 
-#[derive(Default, Resource, Reflect)]
+#[derive(Debug, Default, PartialEq, Reflect)]
+pub enum UniverseStatus {
+    Pause = 0,
+    #[default]
+    Play = 1
+}
+
+#[derive(Default, Resource, PartialEq, Reflect)]
 #[reflect(Resource)]
 pub struct Universe {
     pub width: u32,
@@ -29,6 +31,7 @@ pub struct Universe {
     #[reflect(ignore)]
     pub cells: Vec<Vec<Cell>>,
     pub generation_time: u64,
+    pub status: UniverseStatus
 }
 
 #[derive(Resource)]
@@ -69,7 +72,8 @@ impl Universe {
             width,
             height,
             cells,
-            generation_time: 50
+            generation_time: 50,
+            ..default()
         }
     }
 
@@ -127,13 +131,23 @@ impl Universe {
 
         self.cells = next_cells;
     }
+
+    pub fn switch_status(&mut self) {
+        self.status = match self.status {
+            UniverseStatus::Pause => UniverseStatus::Play,
+            UniverseStatus::Play => UniverseStatus::Pause
+        };
+    }
+
 }
 
 fn tick(mut universe: ResMut<Universe>, time: Res<Time>, mut universe_timer: ResMut<UniverseTimer>) {
-    universe_timer.timer.tick(time.delta());
-
-    if universe_timer.timer.finished() {
-        universe.next_generation();
+    if universe.status == UniverseStatus::Play {
+        universe_timer.timer.tick(time.delta());
+    
+        if universe_timer.timer.finished() {
+            universe.next_generation();
+        }
     }
 }
 
@@ -144,4 +158,13 @@ fn setup_timer(
     commands.insert_resource(UniverseTimer {
         timer: Timer::new(Duration::from_millis(universe.generation_time), TimerMode::Repeating)
     })
+}
+
+fn change_status(
+    mut universe: ResMut<Universe>,
+    keyboard_input: Res<ButtonInput<KeyCode>>
+) {
+    if keyboard_input.just_pressed(KeyCode::Space) {
+        universe.switch_status();
+    }
 }
